@@ -1,19 +1,19 @@
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: birthday-app-dev
+  name: birthday-app
 spec:
-  replicas: 2
+  replicas: 4
   template:
     metadata:
       labels:
         name: backend
         app: birthday-app
-        env: dev
+        env: prod
     spec:
       containers:
       - name: backend
-        image: gcr.io/sre-test-203806/birthday-app:master.latest
+        image: gcr.io/sre-test-203806/birthday-app:live
         resources:
           limits:
             memory: "500Mi"
@@ -25,5 +25,5 @@ spec:
             port: 80
         command: ['python3', '-m', 'aiohttp.web', '-H', '0.0.0.0', '-P', '80', 'app.main:run']
         ports:
-        - name: backend
+        - name: frontend
           containerPort: 80
