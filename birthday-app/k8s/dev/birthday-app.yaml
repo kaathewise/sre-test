@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: birthday-app-dev
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: backend
+        app: birthday-app
+        env: dev
+    spec:
+      containers:
+      - name: backend
+        image: gcr.io/sre-test-203806/birthday-app.master:latest
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /statusz
+            port: 8080
+        command: ['python3 -m aiohttp.web -P 8080 main:run']
+        ports:
+        - name: backend
+          containerPort: 8080
