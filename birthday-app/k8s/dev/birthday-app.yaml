@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/sre-test-203806/birthday-app.master:latest
+        image: gcr.io/sre-test-203806/birthday-app:master.latest
         resources:
           limits:
             memory: "500Mi"
@@ -22,8 +22,8 @@ spec:
         readinessProbe:
           httpGet:
             path: /statusz
-            port: 8080
-        command: ['python3 -m aiohttp.web -P 8080 main:run']
+            port: 80
+        command: ['python3', '-m', 'aiohttp.web', '-H', '0.0.0.0', '-P', '80', 'app.main:run']
         ports:
         - name: backend
-          containerPort: 8080
+          containerPort: 80
