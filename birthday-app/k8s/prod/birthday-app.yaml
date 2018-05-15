@@ -12,8 +12,30 @@ spec:
         env: prod
     spec:
       containers:
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances=sre-test-203806:europe-west1:storage=tcp:3306",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
       - name: backend
         image: gcr.io/sre-test-203806/birthday-app:live
+        env:
+        - name: DB_CONN
+          value: 127.0.0.1:3306:app
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: cloudsql-db-credentials
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cloudsql-db-credentials
+              key: password
         resources:
           limits:
             memory: "500Mi"
@@ -27,3 +49,7 @@ spec:
         ports:
         - name: frontend
           containerPort: 80
+      volumes:
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
