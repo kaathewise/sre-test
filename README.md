@@ -20,7 +20,7 @@ environment?" is as easy as possible
 ### Code structure
 
 The code is split into 2 repositories: this one contains the deployment configurations
-and [https://github.com/kaathewise/birthday-app] contains the sample application.
+and https://github.com/kaathewise/birthday-app contains the sample application.
 
 The reasons for such split are the following: these two parts are largely independent,
 they may be managed by different people, and their changes should be processed differently.
@@ -28,7 +28,7 @@ The split simplifies the management of the project and protects from accidental 
 
 ### Deployment structure
 
-The deployment is hosted on Google Cloud at [https://console.cloud.google.com/home/dashboard?project=sre-test-203806], and consists
+The deployment is hosted on Google Cloud at https://console.cloud.google.com/home/dashboard?project=sre-test-203806, and consists
 of several services managed by Kubernetes: `prod` service, `dev` service and Jenkins subcluster
 responsible for building images and release. We also use Google Container Registry for hosting
 Docker containers and CloudSql for app data storage.
@@ -89,7 +89,14 @@ its own database in the same instance, which was done as a cheap hack.
 
 ### Tentative improvements
 
-1. Storing code in Google Cloud which simplifies hooks, automation and error reporting.
+1. Storing code in Google Cloud simplifies hooks, automation and error reporting.
 2. Assigning `live` and `RCxxx` tags to git branches, to make that information available
 outside GCR.
 3. Helm or Ansible for templating deployment configurations.
+4. `canary` environment.
+
+### App improvements
+
+1. Better testing.
+2. Better runnable and code structure, flags are better than environment variables.
+3. Better error-handling.
